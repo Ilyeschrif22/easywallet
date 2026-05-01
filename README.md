@@ -25,7 +25,7 @@ Create a new virtual wallet for a user.
   ```
 - **Success Response:** `201 Created`
 
----
+
 
 ### 2. Get All Wallets
 Retrieve a list of all registered wallets.
@@ -34,7 +34,7 @@ Retrieve a list of all registered wallets.
 - **Method:** `GET`
 - **Success Response:** `200 OK` (Returns an array of wallets)
 
----
+
 
 ### 3. Get Wallet Balance
 Check the current balance of a specific wallet.
@@ -45,7 +45,7 @@ Check the current balance of a specific wallet.
     - `walletNumber`: The unique account number of the wallet.
 - **Success Response:** `200 OK`
 
----
+
 
 ### 4. Get Transaction History
 View the history of deposits and transfers for a wallet.
@@ -56,7 +56,7 @@ View the history of deposits and transfers for a wallet.
     - `walletNumber`: The unique account number of the wallet.
 - **Success Response:** `200 OK`
 
----
+
 
 ### 5. Deposit Funds
 Add money to a virtual wallet.
@@ -72,7 +72,7 @@ Add money to a virtual wallet.
   ```
 - **Success Response:** `200 OK`
 
----
+
 
 ### 6. Send Money (Transfer)
 Transfer funds from one wallet to another.

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EasyWallet — Developer Sandbox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --surface2: #1a1a1a;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.16);
+            --text: #f0f0f0;
+            --text-muted: #666;
+            --text-dim: #444;
+            --accent: #c8ff00;
+            --accent-dim: rgba(200, 255, 0, 0.12);
+            --ok: #4ade80;
+            --ok-dim: rgba(74, 222, 128, 0.12);
+            --err: #f87171;
+            --err-dim: rgba(248, 113, 113, 0.12);
+            --info: #60a5fa;
+            --info-dim: rgba(96, 165, 250, 0.12);
+            --radius: 10px;
+            --mono: 'DM Mono', monospace;
+            --display: 'Syne', sans-serif;
+            --body: 'DM Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Header ── */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+      
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: color .2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            padding: 5rem 2rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: var(--display);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 20px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            font-family: var(--body);
+            border-radius: var(--radius);
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all .2s;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .btn-accent:hover {
+            background: #d4ff1a;
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        /* ── Sandbox ── */
+        .sandbox {
+            max-width: 1300px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        .sandbox-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .sandbox-header h2 {
+            font-family: var(--display);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .sandbox-header span {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        /* ── Tabs ── */
+        .tabs-bar {
+            display: flex;
+            gap: 2px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 4px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: var(--body);
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .15s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: var(--surface2);
+        }
+
+        .tab-btn.active {
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .tab-icon {
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        /* ── Panel ── */
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .panel-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        .dual-layout {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .form-col {
+            flex: 1.2;
+            min-width: 260px;
+        }
+
+        .response-col {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .panel-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.55;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .fields-grid.single {
+            grid-template-columns: 1fr;
+        }
+
+        .fields-grid.three {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .field input {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 9px 12px;
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            color: var(--text);
+            width: 100%;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .field input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(200, 255, 0, 0.08);
+        }
+
+        .run-btn {
+            width: 100%;
+            padding: 10px;
+            font-family: var(--body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all .15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .run-btn:hover {
+            background: #d4ff1a;
+        }
+
+        .run-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* ── Response (right side) - MUCH LONGER ── */
+        .response {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .response-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 12px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .response-label {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .status-pill {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            padding: 2px 9px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .pill-idle {
+            background: var(--surface);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+        }
+
+        .pill-loading {
+            background: var(--info-dim);
+            color: var(--info);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .pill-ok {
+            background: var(--ok-dim);
+            color: var(--ok);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .pill-err {
+            background: var(--err-dim);
+            color: var(--err);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+
+        /* 🔥 RESPONSE BODY - TALLER (increased max-height) */
+        .response-body {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            line-height: 1.65;
+            padding: 14px;
+            max-height: 480px;
+            min-height: 280px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--text-muted);
+            background: var(--surface);
+            flex: 1;
+        }
+
+        /* JSON syntax highlight */
+        .response-body .key {
+            color: #a78bfa;
+        }
+
+        .response-body .str {
+            color: #86efac;
+        }
+
+        .response-body .num {
+            color: #fbbf24;
+        }
+
+        .response-body .bool {
+            color: #60a5fa;
+        }
+
+        .response-body .null {
+            color: var(--text-dim);
+        }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 860px) {
+            .dual-layout {
+                flex-direction: column;
+            }
+
+            .fields-grid,
+            .fields-grid.three {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 3rem 1.25rem 2rem;
+            }
+
+            .sandbox {
+                padding: 0 1.25rem;
+            }
+
+            header {
+                padding: 1rem 1.25rem;
+            }
+
+            .response-body {
+                max-height: 360px;
+                min-height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+           
+            EasyWallet
+        </div>
+        <nav>
+            <a href="#">Features</a>
+            <a href="#sandbox">Sandbox</a>
+            <a href="#">Docs</a>
+            <a href="#">GitHub</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Next-gen<br><span>virtual payments</span></h1>
+
+        <div class="hero-actions">
+            <a href="#sandbox" class="btn btn-accent">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M5 6.5l1.5 1.5L8.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Open sandbox
+            </a>
+            <a href="#" class="btn btn-ghost">Get Postman collection</a>
+        </div>
+    </section>
+
+    <section class="sandbox" id="sandbox">
+        <div class="sandbox-header">
+            <h2>Interactive sandbox</h2>
+            <span>localhost:5001/api/wallet</span>
+        </div>
+
+        <div class="tabs-bar">
+            <button class="tab-btn active" onclick="switchTab('create')"><span class="tab-icon">＋</span> Create
+                wallet</button>
+            <button class="tab-btn" onclick="switchTab('deposit')"><span class="tab-icon">↓</span> Deposit</button>
+            <button class="tab-btn" onclick="switchTab('transfer')"><span class="tab-icon">⇄</span> Transfer</button>
+            <button class="tab-btn" onclick="switchTab('balance')"><span class="tab-icon">◎</span> Balance</button>
+            <button class="tab-btn" onclick="switchTab('history')"><span class="tab-icon">≡</span> History</button>
+            <button class="tab-btn" onclick="switchTab('overview')"><span class="tab-icon">⊞</span> Overview</button>
+        </div>
+
+        <!-- Create Wallet - response on the right, taller -->
+        <div class="panel active" id="panel-create">
+            <div class="panel-card">
+                <p class="panel-desc">Generate a new AES-256 encrypted virtual wallet. The response includes your wallet
+                    number — save it to use deposit, transfer, balance, and history endpoints.</p>
+                <div class="dual-layout">
+                    <div class="form-col">
+                        <div class="fields-grid">
+                            <div class="field"><label>Username</label><input id="cw-username" placeholder="jdoe"></div>
+                            <div class="field"><label>Last name</label><input id="cw-lastname" placeholder="Doe"></div>
+                            <div class="field"><label>Email</label><input id="cw-email" type="email"
+                                    placeholder="jdoe@example.com"></div>
+                            <div class="field"><label>Password</label><input id="cw-password" type="password"
+                                    placeholder="••••••••"></div>
+                        </div>
+                        <button class="run-btn" onclick="run('create')">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M3 6h6M6 3l3 3-3 3" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            Generate secure wallet
+                        </button>
+                    </div>
+                    <div class="response-col">
+                        <div class="response">
+                            <div class="response-head">
+                                <span class="response-label">POST /create</span>
+                                <span class="status-pill pill-idle" id="pill-create">idle</span>
+                            </div>
+                            <div class="response-body" id="body-create">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deposit -->
+        <div class="panel" id="panel-deposit">
+            <div class="panel-card">
+                <p class="panel-desc">Add funds to a wallet. Use the wallet number returned from Create Wallet.</p>
+                <div class="dual-layout">
+                    <div class="form-col">
+                        <div class="fields-grid">
+                            <div class="field"><label>Wallet number</label><input id="dep-wallet"
+                                    placeholder="4000-xxxx-xxxx-xxxx"></div>
+                            <div class="field"><label>Amount (TND)</label><input id="dep-amount" type="number"
+                                    placeholder="100.00"></div>
+                        </div>
+                        <button class="run-btn" onclick="run('deposit')">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M6 2v8M2 6l4 4 4-4" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            Deposit funds
+                        </button>
+                    </div>
+                    <div class="response-col">
+                        <div class="response">
+                            <div class="response-head">
+                                <span class="response-label">POST /deposit</span>
+                                <span class="status-pill pill-idle" id="pill-deposit">idle</span>
+                            </div>
+                            <div class="response-body" id="body-deposit">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfer -->
+        <div class="panel" id="panel-transfer">
+            <div class="panel-card">
+                <p class="panel-desc">Move funds between two wallets. Both wallets must exist and the sender must have
+                    sufficient balance.</p>
+                <div class="dual-layout">
+                    <div class="form-col">
+                        <div class="fields-grid three">
+                            <div class="field"><label>Sender wallet</label><input id="send-from"
+                                    placeholder="From wallet number"></div>
+                            <div class="field"><label>Recipient wallet</label><input id="send-to"
+                                    placeholder="To wallet number"></div>
+                            <div class="field"><label>Amount (TND)</label><input id="send-amount" type="number"
+                                    placeholder="25.00"></div>
+                        </div>
+                        <button class="run-btn" onclick="run('transfer')">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 4h8M8 2l2 2-2 2M10 8H2M4 6l-2 2 2 2" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            Transfer now
+                        </button>
+                    </div>
+                    <div class="response-col">
+                        <div class="response">
+                            <div class="response-head">
+                                <span class="response-label">POST /send</span>
+                                <span class="status-pill pill-idle" id="pill-transfer">idle</span>
+                            </div>
+                            <div class="response-body" id="body-transfer">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balance -->
+        <div class="panel" id="panel-balance">
+            <div class="panel-card">
+                <p class="panel-desc">Retrieve the decrypted balance for a specific wallet.</p>
+                <div class="dual-layout">
+                    <div class="form-col">
+                        <div class="fields-grid single">
+                            <div class="field"><label>Wallet number</label><input id="bal-wallet"
+                                    placeholder="Wallet number"></div>
+                        </div>
+                        <button class="run-btn" onclick="run('balance')">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M6 4v2l1.5 1.5" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                            Check balance
+                        </button>
+                    </div>
+                    <div class="response-col">
+                        <div class="response">
+                            <div class="response-head">
+                                <span class="response-label">GET /balance/:walletNumber</span>
+                                <span class="status-pill pill-idle" id="pill-balance">idle</span>
+                            </div>
+                            <div class="response-body" id="body-balance">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="panel" id="panel-history">
+            <div class="panel-card">
+                <p class="panel-desc">Fetch the full transaction log for a wallet — all deposits, sends, and receives.
+                </p>
+                <div class="dual-layout">
+                    <div class="form-col">
+                        <div class="fields-grid single">
+                            <div class="field"><label>Wallet number</label><input id="tx-wallet"
+                                    placeholder="Wallet number"></div>
+                        </div>
+                        <button class="run-btn" onclick="run('history')">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 3h8M2 6h6M2 9h4" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                            Fetch history
+                        </button>
+                    </div>
+                    <div class="response-col">
+                        <div class="response">
+                            <div class="response-head">
+                                <span class="response-label">GET /transactions/:walletNumber</span>
+                                <span class="status-pill pill-idle" id="pill-history">idle</span>
+                            </div>
+                            <div class="response-body" id="body-history">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="panel" id="panel-overview">
+            <div class="panel-card">
+                <p class="panel-desc">List every wallet registered in the in-memory store. Useful for verifying test
+                    data or debugging between sessions.</p>
+                <div class="dual-layout">
+                    <div class="form-col">
+                        <button class="run-btn" onclick="run('overview')">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <rect x="1.5" y="1.5" width="4" height="4" rx="1" stroke="currentColor"
+                                    stroke-width="1.5" />
+                                <rect x="6.5" y="1.5" width="4" height="4" rx="1" stroke="currentColor"
+                                    stroke-width="1.5" />
+                                <rect x="1.5" y="6.5" width="4" height="4" rx="1" stroke="currentColor"
+                                    stroke-width="1.5" />
+                                <rect x="6.5" y="6.5" width="4" height="4" rx="1" stroke="currentColor"
+                                    stroke-width="1.5" />
+                            </svg>
+                            List all wallets
+                        </button>
+                    </div>
+                    <div class="response-col">
+                        <div class="response">
+                            <div class="response-head">
+                                <span class="response-label">GET /wallets</span>
+                                <span class="status-pill pill-idle" id="pill-overview">idle</span>
+                            </div>
+                            <div class="response-body" id="body-overview">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer>© 2026 EasyWallet · Built for secure virtual testing</footer>
+
+    <script>
+        const BASE = 'http://localhost:5001/api/wallet';
+        const TABS = ['create', 'deposit', 'transfer', 'balance', 'history', 'overview'];
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', TABS[i] === name);
+            });
+            TABS.forEach(t => {
+                document.getElementById('panel-' + t).classList.toggle('active', t === name);
+            });
+        }
+
+        function syntaxHighlight(json) {
+            return json
+                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+                    let cls = 'num';
+                    if (/^"/.test(match)) cls = /:$/.test(match) ? 'key' : 'str';
+                    else if (/true|false/.test(match)) cls = 'bool';
+                    else if (/null/.test(match)) cls = 'null';
+                    return `<span class="${cls}">${match}</span>`;
+                });
+        }
+
+        async function run(op) {
+            const pill = document.getElementById('pill-' + op);
+            const body = document.getElementById('body-' + op);
+            const g = id => document.getElementById(id)?.value ?? '';
+
+            if (!pill || !body) return;
+
+            pill.className = 'status-pill pill-loading';
+            pill.textContent = 'loading...';
+            body.innerHTML = '';
+
+            let url, method = 'GET', payload = null;
+
+            switch (op) {
+                case 'create':
+                    url = BASE + '/create'; method = 'POST';
+                    payload = { username: g('cw-username'), lastName: g('cw-lastname'), email: g('cw-email'), password: g('cw-password') };
+                    break;
+                case 'deposit':
+                    url = BASE + '/deposit'; method = 'POST';
+                    payload = { walletNumber: g('dep-wallet'), amount: parseFloat(g('dep-amount')) };
+                    break;
+                case 'transfer':
+                    url = BASE + '/send'; method = 'POST';
+                    payload = { fromWalletNumber: g('send-from'), toWalletNumber: g('send-to'), amount: parseFloat(g('send-amount')) };
+                    break;
+                case 'balance':
+                    url = BASE + '/balance/' + encodeURIComponent(g('bal-wallet')); method = 'GET';
+                    break;
+                case 'history':
+                    url = BASE + '/transactions/' + encodeURIComponent(g('tx-wallet')); method = 'GET';
+                    break;
+                case 'overview':
+                    url = BASE + '/wallets'; method = 'GET';
+                    break;
+                default:
+                    return;
+            }
+
+            try {
+                const opts = { method, headers: { 'Content-Type': 'application/json' } };
+                if (payload) opts.body = JSON.stringify(payload);
+                const res = await fetch(url, opts);
+                const data = await res.json();
+                const pretty = JSON.stringify(data, null, 2);
+                body.innerHTML = syntaxHighlight(pretty);
+                pill.className = 'status-pill ' + (res.ok ? 'pill-ok' : 'pill-err');
+                pill.textContent = res.ok ? '200 OK' : res.status + ' Error';
+            } catch (e) {
+                body.innerHTML = syntaxHighlight(JSON.stringify({
+                    error: 'Request failed',
+                    message: e.message,
+                    hint: 'Make sure the backend is running on port 5001'
+                }, null, 2));
+                pill.className = 'status-pill pill-err';
+                pill.textContent = 'Failed';
+            }
+        }
+    </script>
+</body>
+
+</html>

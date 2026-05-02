@@ -4,6 +4,8 @@
 
 EasyWallet is a virtual wallet system that allows users to create wallets, check balances, view transaction history, deposit funds, and transfer money between accounts.
 
+demo : https://easywallet-frontend-sandbox.vercel.app/
+
 ## Base URL
 The backend server runs on `http://localhost:5000/api/wallet` by default.
 

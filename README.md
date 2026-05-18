@@ -7,7 +7,7 @@ EasyWallet is a virtual wallet system that allows users to create wallets, check
 demo : https://easywallet-frontend-sandbox.vercel.app/
 
 ## Base URL
-The backend server runs on `http://localhost:5000/api/wallet` by default.
+The backend server runs on `https://easywallet-dev.vercel.app/` by default.
 
 ## Endpoints
 
